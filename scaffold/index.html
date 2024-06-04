@@ -9,17 +9,27 @@
 <body>
     <div class="container">
         <div id = "start-rules">
-        <h2>Welcome to Ninja's Quizz.</h2>
-        <h3>Rules: </h3>
-        <ul>
-            <!-- Write your game rules here. -->
-        </ul>
-    </div>
+            <h2>Welcome to Ninja's Quizz.</h2>
+            <h3>Rules: </h3>
+            <ul>
+                <!-- Write your game rules here. -->
+                <li>Your quiz will be end in 1 minute.</li>
+                <li>Your quiz will contain infinite number of questions as we are fetching them from API.</li>
+                <li>You would be provided 10 marks for every correct answer.</li>
+                <li>There is no negative marking.</li>
+                <li>At the end of the game, your score will be displayed.</li>
+            </ul>
+        </div>
         <div id="startScreen">
             <!-- Create your start button here. -->
+            <button id="startQuiz">Start Quiz</button>
         </div>
         <div id="quizScreen" class="hidden">
             <!-- Create the answer, timer and score related things here. -->
+            <h2 id="question"></h2>
+            <div id="options"></div>
+            <div id="timer"></div>
+            <div id="score"></div>
         </div>
         <div id="endScreen" class="hidden">
             
@@ -28,8 +38,10 @@
                 <p>Improve Your knowledge by playing it again and again.</p>
                 <h3><p id="endMessage"></p></h3>
                 <!-- Create final score here. -->
+                <div id="finalScore"></div>
             </div>
             <!-- Create the play Again button here. -->
+            <button id="playAgain">Play Again</button>
         </div>
     </div>
     <script src="script.js"></script>

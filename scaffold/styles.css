@@ -1,1 +1,84 @@
 /* Write your desired CSS here */
+body{
+    background-color: black;
+}
+
+.container{
+    background-color: white;
+    position: fixed;
+    inset: 0;
+    width: 80vw;
+    max-width: 600px;
+    height: fit-content;
+    margin: auto;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.hidden{
+    display: none;
+}
+
+button{
+    background-color: slateblue;
+    color: white;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius:50vmin;
+    transition: transform 0.5s;
+    border:solid transparent;
+    /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); Shadow effect */
+}
+
+button:hover{
+    background-color: darkgreen;
+    transform: scale(1.2);
+}
+
+button:active{
+    transform: scale(1);
+}
+
+.answer{
+    margin-right: 4px;
+}
+
+#finalScore{
+    background-color: gold;
+    color: darkred;
+    margin: 8px auto;
+}
+
+#timer{
+    background-color: olive;
+    color: gainsboro;
+    margin: 4px 8px;
+    padding: 4px 8px;
+}
+
+#score{
+    color:darkorange;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width:640px) {
+    .container{
+        width: fit-content !important;
+        margin:auto 8px;
+    }
+
+    #options{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap:8px;
+    }
+    
+    button:hover{
+        transform: scaleY(1.2);
+    }
+    
+    button:active{
+        transform: scaleY(1);
+    }
+}
