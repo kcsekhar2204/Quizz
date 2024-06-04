@@ -41,6 +41,7 @@ button:active{
 
 .answer{
     margin-right: 4px;
+    margin-top: 4px;
 }
 
 #finalScore{
@@ -56,7 +57,7 @@ button:active{
     padding: 4px 8px;
 }
 
-#score{
+.scoreCard{
     color:darkorange;
     display: flex;
     justify-content: center;

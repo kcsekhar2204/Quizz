@@ -15,23 +15,25 @@ const element = (idName) => {
 }
 
 const startQuiz = () => {
-    element("start-rules").classList.add("hidden")
-    element("startScreen").classList.add("hidden")
-    element("quizScreen").classList.remove("hidden")
-    element("timer").innerHTML = `Time Left: ${timeLeft} seconds`
-    var timeRunning = setInterval(() => {
-        element("timer").innerHTML = `Time Left: ${--timeLeft} seconds`
-    }, 1000)
-    element("score").innerHTML = `Score: ${score}`
 
     // Quiz -> Results
     setTimeout(() => {
         clearInterval(timeRunning)
         element("quizScreen").classList.add("hidden")
         element("endScreen").classList.remove("hidden")
-        element("finalScore").innerHTML = `Your Score: ${score}`
-        element("endMessage").innerHTML = `Good job. Learned something new right!!!`
+        element("finalScore").innerHTML = `Your score: ${score}`
+        element("endMessage").innerHTML = `Good job. Learned something new, right?`
     }, timeLeft*1000)
+
+    element("timer").innerHTML = `Time left: ${timeLeft} seconds`
+    var timeRunning = setInterval(() => {
+        element("timer").innerHTML = `Time left: ${--timeLeft} seconds`
+    }, 1000)
+
+    element("start-rules").classList.add("hidden")
+    element("startScreen").classList.add("hidden")
+    element("quizScreen").classList.remove("hidden")
+    element("score").innerHTML = `${score}`
 
     showQuestions()
 }
@@ -39,7 +41,7 @@ const startQuiz = () => {
 function isCorrectAnswer(optionClicked, correctAnswer) {
     if(optionClicked === correctAnswer) {
         score += 10
-        element("score").innerHTML = `Score: ${score}`
+        element("score").innerHTML = `${score}`
         if(timeLeft > 0) showQuestions()
     }
 }
@@ -47,28 +49,34 @@ function isCorrectAnswer(optionClicked, correctAnswer) {
 const showQuestions = async () => {
     try {
         const res = await fetch(fetchQuestionsURL)
-        const response = await res.json()
-        const data = response.results[0]
-        console.log(response)
-        element("question").innerHTML = data?.question
-        var options = [data.correct_answer, ...data.incorrect_answers]
-        if(data.type === "boolean") options = [...options, "", ""]
-        options = options.sort(() => Math.random - 0.5)
-        element("options").innerHTML = `${options.map(option => {
-            return `<button class="answer" onclick='isCorrectAnswer("${option}", "${data.correct_answer}")'>${option}</button>`
-        }).join('')}`
+        if(res.status === 429) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            await showQuestions()
+        } else{
+            const response = await res.json()
+            const data = response.results[0]
+            console.log(response)
+            element("question").innerHTML = data?.question
+            var options = [data.correct_answer, ...data.incorrect_answers]
+            if(data.type === "boolean") options = [...options, "", ""]
+            options = options.sort(() => Math.random - 0.5)
+            element("options").innerHTML = `${options.map(option => {
+                return `<button class="answer" onclick='isCorrectAnswer("${option}", "${data.correct_answer}")'>${option}</button>`
+            }).join('')}`
+        }
     } catch(e) {
         console.log(e)
-        element("question").innerHTML = ""
-        element("options").innerHTML = `<h2 style="background-color: red; color: white;">${errorMsg}</h2>`
+        element("question").innerHTML = `${errorMsg}`
+        element("options").innerHTML = `${[1,2,3,4].map(option => {
+            return `<button class="answer" hidden>${option}</button>`
+        }).join('')}`
         if(timeLeft > 0) showQuestions()
     }
 }
 
 const playAgain = () => {
     element("endScreen").classList.add("hidden")
-    element("start-rules").classList.remove("hidden")
-    element("startScreen").classList.remove("hidden")
+    element("quizScreen").classList.remove("hidden")
     score = defaultScore
     timeLeft = quizTime
 }
@@ -76,5 +84,5 @@ const playAgain = () => {
 // Rules -> Quiz
 element("startQuiz").addEventListener("click", startQuiz)
 
-// Results -> Rules
+// Results -> Quiz
 element("playAgain").addEventListener("click", playAgain)
